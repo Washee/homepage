@@ -16,38 +16,19 @@ export default function Component({service}) {
     widget.fields = ahoydtuDefaultFields;
   }
 
-  // Map fields to corresponding endpoints
-  const endpointMap = new Map();
-  endpointMap.set("index", ["inverterW*", "uptime"]);
-  endpointMap.set("system", ["network", "nrf", "mqtt", "reboot_reason", "daily_reboot"]);
-
-  var systemFetched, indexFetched = false;
-  var ahoydtuIndexData, ahoydtuIndexError;
-  var ahoydtuSystemData, ahoydtuSystemError;
-
   // Fetch relevant data
-  if (widget.fields.map(field => field.replaceAll(/\d+/g, '*')).some(r => endpointMap.get("index").includes(r))) {
-    var indexOut = useWidgetAPI(widget, "index");
-    ahoydtuIndexData = indexOut.data;
-    ahoydtuIndexError = indexOut.error;
-    indexFetched = true;
-  }
-  if (widget.fields.some(r => endpointMap.get("system").includes(r))) {
-    var systemOut = useWidgetAPI(widget, "system");
-    ahoydtuSystemData = systemOut.data;
-    ahoydtuSystemError = systemOut.error;
-    systemFetched = true;
-  }
+  const { data: ahoydtuIndexData, error: ahoydtuIndexError } = useWidgetAPI(widget, "index");
+  const { data: ahoydtuSystemData, error: ahoydtuSystemError } = useWidgetAPI(widget, "system");
 
   // Check response errors for relevant endpoints
-  if ((ahoydtuIndexError && indexFetched) || (ahoydtuSystemError && systemFetched)) {
+  if (ahoydtuIndexError || ahoydtuSystemError) {
     return (
       <Container service={service} error={ahoydtuIndexError ?? ahoydtuSystemError}/>
     );
   }
 
   // Check response data for relevant endpoints
-  if ((!ahoydtuIndexData && indexFetched) || (!ahoydtuSystemData && systemFetched)) {
+  if (!ahoydtuIndexData || !ahoydtuSystemData) {
     return (
       <Container service={service}>
         <Block label="ahoydtu.network"/>
