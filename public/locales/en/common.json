@@ -1009,15 +1009,15 @@
         "missing": "Missing",
         "suspended": "Suspended"
     },
-    "spoolman": {
-        "loading": "Loading"
-    },
-    "gitlab": {
-        "groups": "Groups",
-      "issues": "Issues",
-      "merges": "Merge Requests",
-      "projects": "Projects"
-    },
+  "spoolman": {
+    "loading": "Loading"
+  },
+  "gitlab": {
+    "groups": "Groups",
+    "issues": "Issues",
+    "merges": "Merge Requests",
+    "projects": "Projects"
+  },
   "apcups": {
     "status": "Status",
     "load": "Load",
