@@ -1014,16 +1014,16 @@
     },
     "gitlab": {
         "groups": "Groups",
-        "issues": "Issues",
-        "merges": "Merge Requests",
-        "projects": "Projects"
+      "issues": "Issues",
+      "merges": "Merge Requests",
+      "projects": "Projects"
     },
-    "apcups": {
-        "status": "Status",
-        "load": "Load",
-        "bcharge":"Battery Charge",
-      "timeleft": "Time Left"
-    },
+  "apcups": {
+    "status": "Status",
+    "load": "Load",
+    "bcharge": "Battery Charge",
+    "timeleft": "Time Left"
+  },
   "karakeep": {
     "bookmarks": "Bookmarks",
     "favorites": "Favorites",
