@@ -1022,25 +1022,37 @@
         "status": "Status",
         "load": "Load",
         "bcharge":"Battery Charge",
-        "timeleft":"Time Left"
+      "timeleft": "Time Left"
     },
-    "karakeep": {
-        "bookmarks": "Bookmarks",
-        "favorites": "Favorites",
-        "archived": "Archived",
-        "highlights": "Highlights",
-        "lists": "Lists",
-        "tags": "Tags"
-    },
-    "slskd": {
-        "slskStatus": "Network",
-        "connected": "Connected",
-        "disconnected": "Disconnected",
-        "updateStatus": "Update",
-        "update_yes": "Available",
-        "update_no": "Up to Date",
-        "downloads": "Downloads",
-        "uploads": "Uploads",
-        "sharedFiles": "Files"
-    }
+  "karakeep": {
+    "bookmarks": "Bookmarks",
+    "favorites": "Favorites",
+    "archived": "Archived",
+    "highlights": "Highlights",
+    "lists": "Lists",
+    "tags": "Tags"
+  },
+  "slskd": {
+    "slskStatus": "Network",
+    "connected": "Connected",
+    "disconnected": "Disconnected",
+    "updateStatus": "Update",
+    "update_yes": "Available",
+    "update_no": "Up to Date",
+    "downloads": "Downloads",
+    "uploads": "Uploads",
+    "sharedFiles": "Files"
+  },
+  "ahoydtu": {
+    "network": "Network",
+    "nrf": "Nrf",
+    "mqtt": "Mqtt",
+    "reboot_reason": "Reboot reason",
+    "daily_reboot": "Daily reboot",
+    "uptime": "Uptime",
+    "inverterW0": "Inverter[0]",
+    "inverterW1": "Inverter[1]",
+    "inverterW2": "Inverter[2]",
+    "inverterW3": "Inverter[3]"
+  }
 }
