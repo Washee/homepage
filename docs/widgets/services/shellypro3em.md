@@ -5,7 +5,7 @@ description: ShellyPro 3 EM Widget
 
 Learn more about [ShellyPro3EM](https://shellyparts.de/products/shelly-pro-3em).
 
-Allowed fields: `["uptime", "wifi", "eth", "mqtt", "ws", "total_W", "phaseA_W", "phaseB_W", "phaseC_W]`.
+Allowed fields: `["uptime", "wifi", "eth", "mqtt", "ws", "temperature", "total_W", "phaseA_W", "phaseB_W", "phaseC_W]`.
 
 ```yaml
 widget:
