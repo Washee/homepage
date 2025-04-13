@@ -1061,6 +1061,7 @@
         "eth": "ETH",
         "mqtt": "Mqtt",
         "ws": "Webservice",
+        "temperature": "Temp",
         "total_W": "Total",
         "phaseA_W": "Phase A",
         "phaseB_W": "Phase B",

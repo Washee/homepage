@@ -35,6 +35,7 @@ export default function Component({service}) {
         <Block label="shellypro3em.eth"/>
         <Block label="shellypro3em.mqtt"/>
         <Block label="shellypro3em.ws"/>
+        <Block label="shellypro3em.temperature"/>
         <Block label="shellypro3em.total_W"/>
         <Block label="shellypro3em.phaseA_W"/>
         <Block label="shellypro3em.phaseB_W"/>
@@ -44,7 +45,6 @@ export default function Component({service}) {
   }
 
   // Map data to corresponding fields
-
   const em = "em:0"
   const valueMap = new Map();
   valueMap.set("uptime", () => {
@@ -66,6 +66,9 @@ export default function Component({service}) {
   valueMap.set("ws", () => {
     return { label: "ws", value: shellypro3emStatusData.ws.connected ? "Connected" : "Disconnected" };
   });
+  valueMap.set("temperature", () => {
+    return { label: "temperature", value: shellypro3emStatusData["temperature:0"].tC + "°C" };
+  });
   valueMap.set("total_W", () => {
     return {label: "total_W", value: shellypro3emStatusData[em].total_act_power + " W"};
   });
@@ -78,19 +81,7 @@ export default function Component({service}) {
   valueMap.set("phaseC_W", () => {
     return {label: "phaseC_W", value: shellypro3emStatusData[em].c_act_power + " W"};
   });
-  /**
-   * vorschläge:
-   * uptime   sys.uptime    (seconds uptime)
-   * eth    eth.ip            (ip string)
-   * wifi    wifi.status   (string)    alternativ sta_ip
-   * mqtt   mqtt.connected   (boolean)
-   * ws     ws.connected   (boolean)
-   *
-   * total W    em:0.total_act_power  (kommazahl)
-   * phasea W   em:0.a_act_power
-   * phaseB W   em:0.b_act_power
-   * phaseC W   em:0.c_act_power
-   */
+
   return (
     <Container service={service}>
       {widget.fields.map((field) => (
