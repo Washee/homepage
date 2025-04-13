@@ -1021,8 +1021,8 @@
     "apcups": {
         "status": "Status",
         "load": "Load",
-        "bcharge":"Battery Charge",
-        "timeleft":"Time Left"
+        "bcharge": "Battery Charge",
+        "timeleft": "Time Left"
     },
     "karakeep": {
         "bookmarks": "Bookmarks",
@@ -1042,5 +1042,17 @@
         "downloads": "Downloads",
         "uploads": "Uploads",
         "sharedFiles": "Files"
+    },
+    "ahoydtu": {
+        "network": "Network",
+        "nrf": "Nrf",
+        "mqtt": "Mqtt",
+        "reboot_reason": "Reboot reason",
+        "daily_reboot": "Daily reboot",
+        "uptime": "Uptime",
+        "inverterW0": "Inverter[0]",
+        "inverterW1": "Inverter[1]",
+        "inverterW2": "Inverter[2]",
+        "inverterW3": "Inverter[3]"
     }
 }
