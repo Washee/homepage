@@ -1054,5 +1054,17 @@
         "inverterW1": "Inverter[1]",
         "inverterW2": "Inverter[2]",
         "inverterW3": "Inverter[3]"
+    },
+    "shellypro3em": {
+        "uptime": "Uptime",
+        "wifi": "WIFI",
+        "eth": "ETH",
+        "mqtt": "Mqtt",
+        "ws": "Webservice",
+        "total_W": "Total",
+        "phaseA_W": "Phase A",
+        "phaseB_W": "Phase B",
+        "phaseC_W": "Phase C"
+
     }
 }
