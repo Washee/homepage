@@ -1066,6 +1066,10 @@
         "phaseA_W": "Phase A",
         "phaseB_W": "Phase B",
         "phaseC_W": "Phase C"
-
+    },
+    "tasmota": {
+        "uptime": "Uptime",
+        "ssid": "SSID",
+        "state": "State"
     }
 }

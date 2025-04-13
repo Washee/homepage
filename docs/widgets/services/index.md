@@ -127,6 +127,7 @@ You can also find a list of all available service widgets in the sidebar navigat
 - [SwagDashboard](swagdashboard.md)
 - [Syncthing Relay Server](syncthing-relay-server.md)
 - [Tailscale](tailscale.md)
+- [Tasmota](tasmota.md)
 - [Tandoor](tandoor.md)
 - [Technitium DNS](technitium.md)
 - [TDarr](tdarr.md)
