@@ -127,6 +127,7 @@ const components = {
   suwayomi: dynamic(() => import("./suwayomi/component")),
   tailscale: dynamic(() => import("./tailscale/component")),
   tandoor: dynamic(() => import("./tandoor/component")),
+  tasmota: dynamic(() => import("./tasmota/component")),
   tautulli: dynamic(() => import("./tautulli/component")),
   technitium: dynamic(() => import("./technitium/component")),
   tdarr: dynamic(() => import("./tdarr/component")),

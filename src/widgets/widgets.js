@@ -118,6 +118,7 @@ import suwayomi from "./suwayomi/widget";
 import swagdashboard from "./swagdashboard/widget";
 import tailscale from "./tailscale/widget";
 import tandoor from "./tandoor/widget";
+import tasmota from "./tasmota/widget";
 import tautulli from "./tautulli/widget";
 import tdarr from "./tdarr/widget";
 import technitium from "./technitium/widget";
@@ -261,6 +262,7 @@ const widgets = {
   suwayomi,
   tailscale,
   tandoor,
+  tasmota,
   tautulli,
   technitium,
   tdarr,
