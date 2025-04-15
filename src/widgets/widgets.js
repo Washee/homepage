@@ -106,6 +106,7 @@ import romm from "./romm/widget";
 import rutorrent from "./rutorrent/widget";
 import sabnzbd from "./sabnzbd/widget";
 import scrutiny from "./scrutiny/widget";
+import shellyplug from "./shellyplug/widget";
 import shellypro3em from "./shellypro3em/widget";
 import slskd from "./slskd/widget";
 import sonarr from "./sonarr/widget";
@@ -250,6 +251,7 @@ const widgets = {
   rutorrent,
   sabnzbd,
   scrutiny,
+  shellyplug,
   shellypro3em,
   slskd,
   sonarr,

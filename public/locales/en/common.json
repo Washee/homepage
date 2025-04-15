@@ -1071,5 +1071,18 @@
         "uptime": "Uptime",
         "ssid": "SSID",
         "state": "State"
+    },
+    "shellyplug": {
+        "uptime": "Uptime",
+        "power": "Power",
+        "temperature": "Temperature",
+        "state": "State",
+        "mqtt": "Mqtt",
+        "ws": "Webservice",
+        "scheduleCount": "schedules",
+        "enScheduleCount": "Enabled schedules",
+        "disScheduleCount": "Disabled schedules",
+        "nextOnEnSchedule": "Next ON",
+        "nextOffEnSchedule": "Next OFF"
     }
 }
