@@ -135,7 +135,7 @@ function calculateNextScheduleTimestamp(cron) {
   const daysOfWeek = cronSplitted[5].split(",");
   let distance = 7;
   daysOfWeek.forEach((dayOfWeek) => {
-    const currDistance = dayOfWeek - currentDate.getDay();
+    const currDistance = (dayOfWeek - currentDate.getDay() + 7) % 7;
     if(currDistance < distance && currDistance >= 0) {
       if (currDistance == 0) {
         const timeDiff = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), hour, minute, second) - currentDate.getTime();
