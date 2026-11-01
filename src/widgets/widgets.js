@@ -295,12 +295,8 @@ const widgets = {
   rutorrent,
   sabnzbd,
   scrutiny,
-<<<<<<< HEAD
   shellyplug,
-  shellypro3em,
-=======
   seerr,
->>>>>>> origin/dev
   slskd,
   sonarr,
   sparkyfitness,
