@@ -1,9 +1,16 @@
 import { readFileSync } from "fs";
 import path from "path";
 
-import yaml from "js-yaml";
-
 import checkAndCopyConfig, { CONF_DIR, substituteEnvironmentVars } from "utils/config/config";
+import { loadYaml } from "utils/config/yaml";
+
+export function getDefaultDockerArgs(platform = process.platform) {
+  if (platform !== "win32" && platform !== "darwin") {
+    return { socketPath: "/var/run/docker.sock" };
+  }
+
+  return { host: "127.0.0.1" };
+}
 
 export default function getDockerArguments(server) {
   checkAndCopyConfig("docker.yaml");
@@ -11,14 +18,10 @@ export default function getDockerArguments(server) {
   const configFile = path.join(CONF_DIR, "docker.yaml");
   const rawConfigData = readFileSync(configFile, "utf8");
   const configData = substituteEnvironmentVars(rawConfigData);
-  const servers = yaml.load(configData);
+  const servers = loadYaml(configData);
 
   if (!server) {
-    if (process.platform !== "win32" && process.platform !== "darwin") {
-      return { socketPath: "/var/run/docker.sock" };
-    }
-
-    return { host: "127.0.0.1" };
+    return getDefaultDockerArgs();
   }
 
   if (servers[server]) {
@@ -40,6 +43,15 @@ export default function getDockerArguments(server) {
         res.conn.ca = readFileSync(path.join(CONF_DIR, servers[server].tls.caFile));
         res.conn.cert = readFileSync(path.join(CONF_DIR, servers[server].tls.certFile));
         res.conn.key = readFileSync(path.join(CONF_DIR, servers[server].tls.keyFile));
+        res.conn.protocol = "https";
+      }
+
+      if (servers[server].protocol) {
+        res.conn.protocol = servers[server].protocol;
+      }
+
+      if (servers[server].headers) {
+        res.conn.headers = servers[server].headers;
       }
 
       return res;

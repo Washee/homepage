@@ -1,26 +1,20 @@
+import { useTranslation } from "next-i18next/pages";
+
 import Block from "components/services/widget/block";
 import Container from "components/services/widget/container";
-import { useTranslation } from "next-i18next";
-
 import useWidgetAPI from "utils/proxy/use-widget-api";
+import withWidgetFields from "utils/widget-fields";
 
-export default function Component({ service }) {
+const DEFAULT_FIELDS = ["map", "currentPlayers", "ping"];
+
+export default function Component({ service: configuredService }) {
+  const service = withWidgetFields(configuredService, DEFAULT_FIELDS);
   const { widget } = service;
   const { data: serverData, error: serverError } = useWidgetAPI(widget, "status");
   const { t } = useTranslation();
 
   if (serverError) {
     return <Container service={service} error={serverError} />;
-  }
-
-  // Default fields
-  if (widget.fields == null || widget.fields.length === 0) {
-    widget.fields = ["map", "currentPlayers", "ping"];
-  }
-  const MAX_ALLOWED_FIELDS = 4;
-  // Limits max number of displayed fields
-  if (widget.fields != null && widget.fields.length > MAX_ALLOWED_FIELDS) {
-    widget.fields = widget.fields.slice(0, MAX_ALLOWED_FIELDS);
   }
 
   if (!serverData) {
@@ -38,11 +32,7 @@ export default function Component({ service }) {
     );
   }
 
-  const status = serverData.online ? (
-    <span className="text-green-500">{t("gamedig.online")}</span>
-  ) : (
-    <span className="text-red-500">{t("gamedig.offline")}</span>
-  );
+  const status = serverData.online ? t("gamedig.online") : t("gamedig.offline");
   const name = serverData.online ? serverData.name : "-";
   const map = serverData.online ? serverData.map : "-";
   const currentPlayers = serverData.online ? `${serverData.players} / ${serverData.maxplayers}` : "-";
@@ -62,7 +52,7 @@ export default function Component({ service }) {
       <Block label="gamedig.players" value={players} />
       <Block label="gamedig.maxPlayers" value={maxPlayers} />
       <Block label="gamedig.bots" value={bots} />
-      <Block label="gamedig.ping" value={ping} />
+      <Block label="gamedig.ping" value={ping} highlightValue={serverData.online ? serverData.ping : undefined} />
     </Container>
   );
 }

@@ -1,9 +1,9 @@
-import Block from "components/services/widget/block";
-import Container from "components/services/widget/container";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-i18next/pages";
 
 import QueueEntry from "../../components/widgets/queue/queueEntry";
 
+import Block from "components/services/widget/block";
+import Container from "components/services/widget/container";
 import useWidgetAPI from "utils/proxy/use-widget-api";
 
 export default function Component({ service }) {
@@ -45,14 +45,40 @@ export default function Component({ service }) {
   }
 
   const leech = torrentData.length - completed;
+  const statePriority = [
+    "downloading",
+    "forcedDL",
+    "metaDL",
+    "forcedMetaDL",
+    "checkingDL",
+    "stalledDL",
+    "queuedDL",
+    "pausedDL",
+  ];
+  leechTorrents.sort((firstTorrent, secondTorrent) => {
+    const firstStateIndex = statePriority.indexOf(firstTorrent.state);
+    const secondStateIndex = statePriority.indexOf(secondTorrent.state);
+    if (firstStateIndex !== secondStateIndex) {
+      return firstStateIndex - secondStateIndex;
+    }
+    return secondTorrent.progress - firstTorrent.progress;
+  });
 
   return (
     <>
       <Container service={service}>
         <Block label="qbittorrent.leech" value={t("common.number", { value: leech })} />
-        <Block label="qbittorrent.download" value={t("common.bibyterate", { value: rateDl, decimals: 1 })} />
+        <Block
+          label="qbittorrent.download"
+          value={t("common.bibyterate", { value: rateDl, decimals: 1 })}
+          highlightValue={rateDl}
+        />
         <Block label="qbittorrent.seed" value={t("common.number", { value: completed })} />
-        <Block label="qbittorrent.upload" value={t("common.bibyterate", { value: rateUl, decimals: 1 })} />
+        <Block
+          label="qbittorrent.upload"
+          value={t("common.bibyterate", { value: rateUl, decimals: 1 })}
+          highlightValue={rateUl}
+        />
       </Container>
       {widget?.enableLeechProgress &&
         leechTorrents.map((queueEntry) => (
@@ -61,6 +87,11 @@ export default function Component({ service }) {
             timeLeft={t("common.duration", { value: queueEntry.eta })}
             title={queueEntry.name}
             activity={queueEntry.state}
+            size={
+              widget?.enableLeechSize
+                ? t("common.bbytes", { value: queueEntry.size, maximumFractionDigits: 1 })
+                : undefined
+            }
             key={`${queueEntry.name}-${queueEntry.amount_left}`}
           />
         ))}

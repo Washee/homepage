@@ -1,6 +1,6 @@
 import { compareVersions, validate } from "compare-versions";
 import cache from "memory-cache";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-i18next/pages";
 import { MdNewReleases } from "react-icons/md";
 import useSWR from "swr";
 
@@ -55,8 +55,7 @@ export default function Version({ disableUpdateCheck = false }) {
       </span>
       {!validate(version)
         ? null
-        : releaseData &&
-          latestRelease &&
+        : latestRelease &&
           compareVersions(latestRelease.tag_name, version) > 0 && (
             <a
               href={latestRelease.html_url}

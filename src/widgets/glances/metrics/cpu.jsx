@@ -1,10 +1,13 @@
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-i18next/pages";
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { useCallback } from "react";
 
 import Block from "../components/block";
 import Container from "../components/container";
 
+import useDataPoints from "./use-data-points";
+
+import { parseVersionForUrl } from "utils/proxy/api-helpers";
 import useWidgetAPI from "utils/proxy/use-widget-api";
 
 const Chart = dynamic(() => import("../components/chart"), { ssr: false });
@@ -16,26 +19,27 @@ export default function Component({ service }) {
   const { t } = useTranslation();
   const { widget } = service;
   const { chart, refreshInterval = defaultInterval, pointsLimit = defaultPointsLimit, version = 3 } = widget;
+  const apiVersion = parseVersionForUrl(version, 3);
 
-  const [dataPoints, setDataPoints] = useState(new Array(pointsLimit).fill({ value: 0 }, 0, pointsLimit));
+  const [dataPoints, addDataPoint] = useDataPoints(pointsLimit, { value: null });
 
-  const { data, error } = useWidgetAPI(service.widget, `${version}/cpu`, {
-    refreshInterval: Math.max(defaultInterval, refreshInterval),
-  });
+  const handleData = useCallback(
+    (newData) => {
+      if (newData) addDataPoint({ value: newData.total });
+    },
+    [addDataPoint],
+  );
 
-  const { data: quicklookData, error: quicklookError } = useWidgetAPI(service.widget, `${version}/quicklook`);
+  const { data, error } = useWidgetAPI(
+    service.widget,
+    `${apiVersion}/cpu`,
+    {
+      refreshInterval: Math.max(defaultInterval, refreshInterval),
+    },
+    { onSuccess: handleData },
+  );
 
-  useEffect(() => {
-    if (data) {
-      setDataPoints((prevDataPoints) => {
-        const newDataPoints = [...prevDataPoints, { value: data.total }];
-        if (newDataPoints.length > pointsLimit) {
-          newDataPoints.shift();
-        }
-        return newDataPoints;
-      });
-    }
-  }, [data, pointsLimit]);
+  const { data: quicklookData, error: quicklookError } = useWidgetAPI(service.widget, `${apiVersion}/quicklook`);
 
   if (error) {
     return <Container error={error} widget={widget} />;
@@ -53,6 +57,8 @@ export default function Component({ service }) {
     <Container chart={chart}>
       {chart && (
         <Chart
+          chartMin={widget.chartMin}
+          chartMax={widget.chartMax}
           dataPoints={dataPoints}
           label={[t("resources.used")]}
           formatter={(value) =>

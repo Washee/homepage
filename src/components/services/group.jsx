@@ -1,11 +1,12 @@
 import { Disclosure, Transition } from "@headlessui/react";
 import classNames from "classnames";
-import ResolvedIcon from "components/resolvedicon";
-import List from "components/services/list";
 import { useEffect, useRef } from "react";
 import { MdKeyboardArrowDown } from "react-icons/md";
 
 import { columnMap } from "../../utils/layout/columns";
+
+import ResolvedIcon from "components/resolvedicon";
+import List from "components/services/list";
 
 export default function ServicesGroup({
   group,
@@ -36,7 +37,7 @@ export default function ServicesGroup({
         isSubgroup ? "subgroup" : "",
       )}
     >
-      <Disclosure defaultOpen={!(layout?.initiallyCollapsed ?? groupsInitiallyCollapsed) ?? true}>
+      <Disclosure defaultOpen={!(layout?.initiallyCollapsed ?? groupsInitiallyCollapsed)}>
         {({ open }) => (
           <>
             {layout?.header !== false && (

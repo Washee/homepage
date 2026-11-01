@@ -4,9 +4,11 @@ import { getKubeConfig } from "../../../utils/config/kubernetes";
 import { parseCpu, parseMemory } from "../../../utils/kubernetes/utils";
 import createLogger from "../../../utils/logger";
 
+import { withAuth } from "utils/auth";
+
 const logger = createLogger("widget");
 
-export default async function handler(req, res) {
+async function handler(req, res) {
   try {
     const kc = getKubeConfig();
     if (!kc) {
@@ -67,7 +69,7 @@ export default async function handler(req, res) {
         nodeMap[nodeMetric.metadata.name].memory.percent = (mem / nodeMap[nodeMetric.metadata.name].memory.total) * 100;
       });
     } catch (error) {
-      logger.error("Error getting metrics, ensure you have metrics-server installed: s", JSON.stringify(error));
+      logger.error("Error getting metrics, ensure you have metrics-server installed:", JSON.stringify(error));
       return res.status(500).send({
         error: "Error getting metrics, check logs for more details",
       });
@@ -98,3 +100,5 @@ export default async function handler(req, res) {
     });
   }
 }
+
+export default withAuth(handler);

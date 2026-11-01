@@ -1,17 +1,20 @@
+import { withPageAuth } from "utils/auth";
 import checkAndCopyConfig, { getSettings } from "utils/config/config";
 import themes from "utils/styles/themes";
 
-export async function getServerSideProps({ res }) {
+async function getProps({ res }) {
   checkAndCopyConfig("settings.yaml");
   const settings = getSettings();
 
   const color = settings.color || "slate";
   const theme = settings.theme || "dark";
 
+  const pwa = settings.pwa || {};
+
   const manifest = {
     name: settings.title || "Homepage",
     short_name: settings.title || "Homepage",
-    icons: [
+    icons: pwa.icons || [
       {
         src: "/android-chrome-192x192.png?v=2",
         sizes: "192x192",
@@ -23,6 +26,7 @@ export async function getServerSideProps({ res }) {
         type: "image/png",
       },
     ],
+    shortcuts: pwa.shortcuts,
     theme_color: themes[color][theme],
     background_color: themes[color][theme],
     display: "standalone",
@@ -41,3 +45,5 @@ export async function getServerSideProps({ res }) {
 export default function Webmanifest() {
   return null;
 }
+
+export const getServerSideProps = withPageAuth(getProps);

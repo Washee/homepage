@@ -19,10 +19,10 @@ const getInitialTheme = () => {
 export const ThemeContext = createContext();
 
 export function ThemeProvider({ initialTheme, children }) {
-  const [theme, setTheme] = useState(getInitialTheme);
+  const [theme, setTheme] = useState(() => initialTheme ?? getInitialTheme());
 
   const rawSetTheme = (rawTheme) => {
-    const root = window.document.getElementById("page_wrapper");
+    const root = window.document.documentElement;
     const isDark = rawTheme === "dark";
 
     root.classList.remove(isDark ? "light" : "dark");
@@ -30,10 +30,6 @@ export function ThemeProvider({ initialTheme, children }) {
 
     localStorage.setItem("theme-mode", rawTheme);
   };
-
-  if (initialTheme) {
-    rawSetTheme(initialTheme);
-  }
 
   useEffect(() => {
     rawSetTheme(theme);

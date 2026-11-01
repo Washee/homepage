@@ -1,10 +1,13 @@
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-i18next/pages";
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { useCallback } from "react";
 
 import Block from "../components/block";
 import Container from "../components/container";
 
+import useDataPoints from "./use-data-points";
+
+import { parseVersionForUrl } from "utils/proxy/api-helpers";
 import useWidgetAPI from "utils/proxy/use-widget-api";
 
 const ChartDual = dynamic(() => import("../components/chart_dual"), { ssr: false });
@@ -17,39 +20,39 @@ export default function Component({ service }) {
   const { widget } = service;
   const { chart, metric } = widget;
   const { refreshInterval = defaultInterval(chart), pointsLimit = defaultPointsLimit, version = 3 } = widget;
+  const apiVersion = parseVersionForUrl(version, 3);
 
-  const rxKey = version === 3 ? "rx" : "bytes_recv";
-  const txKey = version === 3 ? "tx" : "bytes_sent";
+  const rxKey = apiVersion === 3 ? "rx" : "bytes_recv";
+  const txKey = apiVersion === 3 ? "tx" : "bytes_sent";
 
   const [, interfaceName] = metric.split(":");
 
-  const [dataPoints, setDataPoints] = useState(new Array(pointsLimit).fill({ value: 0 }, 0, pointsLimit));
+  const [dataPoints, addDataPoint] = useDataPoints(pointsLimit, { a: 0, b: 0 });
 
-  const { data, error } = useWidgetAPI(widget, `${version}/network`, {
-    refreshInterval: Math.max(defaultInterval(chart), refreshInterval),
-  });
+  const handleData = useCallback(
+    (newData) => {
+      if (!newData?.error) {
+        const interfaceData = newData.find((item) => item[item.key] === interfaceName);
 
-  useEffect(() => {
-    if (data && !data.error) {
-      const interfaceData = data.find((item) => item[item.key] === interfaceName);
-
-      if (interfaceData) {
-        setDataPoints((prevDataPoints) => {
-          const newDataPoints = [
-            ...prevDataPoints,
-            {
-              a: (interfaceData[rxKey] * 8) / interfaceData.time_since_update,
-              b: (interfaceData[txKey] * 8) / interfaceData.time_since_update,
-            },
-          ];
-          if (newDataPoints.length > pointsLimit) {
-            newDataPoints.shift();
-          }
-          return newDataPoints;
-        });
+        if (interfaceData) {
+          addDataPoint({
+            a: (interfaceData[rxKey] * 8) / interfaceData.time_since_update,
+            b: (interfaceData[txKey] * 8) / interfaceData.time_since_update,
+          });
+        }
       }
-    }
-  }, [data, interfaceName, pointsLimit, rxKey, txKey]);
+    },
+    [addDataPoint, interfaceName, rxKey, txKey],
+  );
+
+  const { data, error } = useWidgetAPI(
+    widget,
+    `${apiVersion}/network`,
+    {
+      refreshInterval: Math.max(defaultInterval(chart), refreshInterval),
+    },
+    { onSuccess: handleData },
+  );
 
   if (error || (data && data.error)) {
     const finalError = error || data.error;
@@ -78,6 +81,8 @@ export default function Component({ service }) {
     <Container chart={chart}>
       {chart && (
         <ChartDual
+          chartMin={widget.chartMin}
+          chartMax={widget.chartMax}
           dataPoints={dataPoints}
           label={[t("docker.rx"), t("docker.tx")]}
           formatter={(value) =>

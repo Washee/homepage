@@ -1,10 +1,11 @@
 import { Disclosure, Transition } from "@headlessui/react";
 import classNames from "classnames";
+import { useEffect, useRef } from "react";
+import { MdKeyboardArrowDown } from "react-icons/md";
+
 import List from "components/bookmarks/list";
 import ErrorBoundary from "components/errorboundry";
 import ResolvedIcon from "components/resolvedicon";
-import { useEffect, useRef } from "react";
-import { MdKeyboardArrowDown } from "react-icons/md";
 
 export default function BookmarksGroup({
   bookmarks,
@@ -32,7 +33,7 @@ export default function BookmarksGroup({
         layout?.header === false ? "px-1" : "p-1 pb-0",
       )}
     >
-      <Disclosure defaultOpen={!(layout?.initiallyCollapsed ?? groupsInitiallyCollapsed) ?? true}>
+      <Disclosure defaultOpen={!(layout?.initiallyCollapsed ?? groupsInitiallyCollapsed)}>
         {({ open }) => (
           <>
             {layout?.header !== false && (

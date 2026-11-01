@@ -1,12 +1,16 @@
+import { useTranslation } from "next-i18next/pages";
+
 import Block from "components/services/widget/block";
 import Container from "components/services/widget/container";
-import { useTranslation } from "next-i18next";
-
 import useWidgetAPI from "utils/proxy/use-widget-api";
+import withWidgetFields from "utils/widget-fields";
 
-export default function Component({ service }) {
+const DEFAULT_FIELDS = ["online", "offline", "offline_alt", "total"];
+
+export default function Component({ service: configuredService }) {
   const { t } = useTranslation();
 
+  const service = withWidgetFields(configuredService, DEFAULT_FIELDS);
   const { widget } = service;
   const { data: resultData, error: resultError } = useWidgetAPI(widget);
 

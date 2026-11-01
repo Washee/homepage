@@ -14,6 +14,9 @@ const widget = {
     login_failed: {
       endpoint: "events/events/per_month/?action=login_failed",
     },
+    datav2: {
+      endpoint: "events/events/volume/?actions=login&actions=login_failed&actions=authorize_application&history_days=1",
+    },
   },
 };
 

@@ -1,9 +1,9 @@
-import Block from "components/services/widget/block";
-import Container from "components/services/widget/container";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-i18next/pages";
 
 import QueueEntry from "../../components/widgets/queue/queueEntry";
 
+import Block from "components/services/widget/block";
+import Container from "components/services/widget/container";
 import useWidgetAPI from "utils/proxy/use-widget-api";
 
 export default function Component({ service }) {
@@ -47,14 +47,15 @@ export default function Component({ service }) {
   }
 
   const leech = keys.length - completed || 0;
+  leechTorrents.sort((firstTorrent, secondTorrent) => secondTorrent.progress - firstTorrent.progress);
 
   return (
     <>
       <Container service={service}>
         <Block label="deluge.leech" value={t("common.number", { value: leech })} />
-        <Block label="deluge.download" value={t("common.byterate", { value: rateDl })} />
+        <Block label="deluge.download" value={t("common.byterate", { value: rateDl })} highlightValue={rateDl} />
         <Block label="deluge.seed" value={t("common.number", { value: completed })} />
-        <Block label="deluge.upload" value={t("common.byterate", { value: rateUl })} />
+        <Block label="deluge.upload" value={t("common.byterate", { value: rateUl })} highlightValue={rateUl} />
       </Container>
       {widget?.enableLeechProgress &&
         leechTorrents.map((queueEntry) => (

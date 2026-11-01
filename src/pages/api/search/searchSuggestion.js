@@ -1,13 +1,17 @@
 import { searchProviders } from "components/widgets/search/search";
-
+import { withAuth } from "utils/auth";
 import { getSettings } from "utils/config/config";
 import { widgetsFromConfig } from "utils/config/widget-helpers";
 import { cachedRequest } from "utils/proxy/http";
 
-export default async function handler(req, res) {
+async function handler(req, res) {
   const { query, providerName } = req.query;
 
   const provider = Object.values(searchProviders).find(({ name }) => name === providerName);
+
+  if (!provider) {
+    return res.json([query, []]);
+  }
 
   if (provider.name === "Custom") {
     const widgets = await widgetsFromConfig();
@@ -31,3 +35,5 @@ export default async function handler(req, res) {
 
   return res.send(await cachedRequest(`${provider.suggestionUrl}${encodeURIComponent(query)}`, 5, "Mozilla/5.0"));
 }
+
+export default withAuth(handler);

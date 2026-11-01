@@ -20,13 +20,13 @@ helm install my-release jameswynn/homepage
 Set the `mode` in the `kubernetes.yaml` to `cluster`.
 
 ```yaml
-mode: default
+mode: cluster
 ```
 
-To enable Kubernetes gateway-api compatibility, set `route` to `gateway`.
+To enable Kubernetes gateway-api compatibility, set `gateway` to `true`.
 
 ```yaml
-route: gateway
+gateway: true
 ```
 
 ## Widgets
@@ -147,7 +147,3 @@ Configure it from the `widgets.yaml`.
       - node1
       - node2
 ```
-
-## Testing
-
-Refer to the [k3d readme](k3d/README.md).

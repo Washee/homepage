@@ -1,21 +1,25 @@
+import { useTranslation } from "next-i18next/pages";
+
 import Block from "components/services/widget/block";
 import Container from "components/services/widget/container";
-import { useTranslation } from "next-i18next";
-
 import useWidgetAPI from "utils/proxy/use-widget-api";
+import withWidgetFields from "utils/widget-fields";
 
-export default function Component({ service }) {
+const DEFAULT_FIELDS = ["address", "last_seen", "expires"];
+
+export default function Component({ service: configuredService }) {
   const { t } = useTranslation();
 
+  const service = withWidgetFields(configuredService, DEFAULT_FIELDS);
   const { widget } = service;
 
-  const { data: statsData, error: statsError } = useWidgetAPI(widget, "device");
+  const { data: tailscaleData, error: tailscaleError } = useWidgetAPI(widget, "device");
 
-  if (statsError || statsData?.message) {
-    return <Container service={service} error={statsError ?? statsData} />;
+  if (tailscaleError || tailscaleData?.message) {
+    return <Container service={service} error={tailscaleError ?? tailscaleData} />;
   }
 
-  if (!statsData) {
+  if (!tailscaleData) {
     return (
       <Container service={service}>
         <Block label="tailscale.address" />
@@ -30,7 +34,17 @@ export default function Component({ service }) {
     keyExpiryDisabled,
     lastSeen,
     expires,
-  } = statsData;
+    user,
+    hostname,
+    name,
+    clientVersion,
+    os,
+    created,
+    authorized,
+    isExternal,
+    updateAvailable,
+    tags,
+  } = tailscaleData;
 
   const now = new Date();
   const compareDifferenceInTwoDates = (priorDate, futureDate) => {
@@ -62,11 +76,28 @@ export default function Component({ service }) {
     return compareDifferenceInTwoDates(now, date);
   };
 
+  const getBooleanAsString = (value) => {
+    return value ? t("tailscale.true") : t("tailscale.false");
+  };
+
+  const clientVersionString = clientVersion ? clientVersion.toString() : "-";
+  const tagsString = tags && Array.isArray(tags) ? tags.join(", ") : "-";
+
   return (
     <Container service={service}>
       <Block label="tailscale.address" value={address} />
       <Block label="tailscale.last_seen" value={getLastSeen()} />
       <Block label="tailscale.expires" value={getExpiry()} />
+      <Block label="tailscale.user" value={user} />
+      <Block label="tailscale.hostname" value={hostname} />
+      <Block label="tailscale.name" value={name} />
+      <Block label="tailscale.client_version" value={clientVersionString} />
+      <Block label="tailscale.os" value={os} />
+      <Block label="tailscale.created" value={created} />
+      <Block label="tailscale.authorized" value={getBooleanAsString(authorized)} />
+      <Block label="tailscale.is_external" value={getBooleanAsString(isExternal)} />
+      <Block label="tailscale.update_available" value={getBooleanAsString(updateAvailable)} />
+      <Block label="tailscale.tags" value={tagsString} />
     </Container>
   );
 }

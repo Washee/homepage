@@ -8,6 +8,11 @@ Learn more about [Crowdsec](https://crowdsec.net).
 See the [crowdsec docs](https://docs.crowdsec.net/docs/local_api/intro/#machines) for information about registering a machine,
 in most instances you can use the default credentials (`/etc/crowdsec/local_api_credentials.yaml`).
 
+!!! note
+
+    `alerts` counts alerts raised by your own engine in the last 24 hours. Alerts originating from the
+    CrowdSec community blocklist are excluded.
+
 Allowed fields: `["alerts", "bans"]`.
 
 ```yaml

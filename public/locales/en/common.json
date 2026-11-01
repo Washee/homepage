@@ -20,6 +20,18 @@
         "minutes": "m",
         "seconds": "s"
     },
+    "auth": {
+        "signout": "Sign out",
+        "loginRequired": "Login Required",
+        "loginDescription": "Login to view your dashboard.",
+        "signIn": "Sign in",
+        "password": "Password",
+        "loginVia": "Login via {{provider}}",
+        "redirecting": "Redirecting to {{provider}}",
+        "invalidPassword": "Invalid password. Please try again.",
+        "authenticationError": "Authentication error",
+        "authenticationErrorDescription": "Auth is disabled or misconfigured."
+    },
     "widget": {
         "missing_type": "Missing Widget Type: {{type}}",
         "api_error": "API Error",
@@ -36,7 +48,9 @@
         "wait": "Please wait"
     },
     "search": {
-        "placeholder": "Search…"
+        "placeholder": "Search…",
+        "provider": "Search engine: {{name}}",
+        "select_provider": "Select search engine"
     },
     "resources": {
         "cpu": "CPU",
@@ -66,6 +80,20 @@
         "wait": "Please wait",
         "empty_data": "Subsystem status unknown"
     },
+    "unifi_drive": {
+        "healthy": "Healthy",
+        "degraded": "Degraded",
+        "no_data": "No storage data available"
+    },
+    "duplicati": {
+        "jobs": "Jobs",
+        "stored": "Stored",
+        "lastBackup": "Last Run",
+        "nextRun": "Next Run",
+        "running": "Running",
+        "warnings": "Warnings",
+        "errors": "Errors"
+    },
     "docker": {
         "rx": "RX",
         "tx": "TX",
@@ -80,7 +108,12 @@
         "unhealthy": "Unhealthy",
         "not_found": "Not Found",
         "exited": "Exited",
-        "partial": "Partial"
+        "partial": "Partial",
+        "created": "Created",
+        "paused": "Paused",
+        "restarting": "Restarting",
+        "removing": "Removing",
+        "dead": "Dead"
     },
     "ping": {
         "error": "Error",
@@ -106,6 +139,17 @@
         "series": "Series",
         "episodes": "Episodes",
         "songs": "Songs"
+    },
+    "jellyfin": {
+        "playing": "Playing",
+        "transcoding": "Transcoding",
+        "bitrate": "Bitrate",
+        "no_active": "No Active Streams",
+        "movies": "Movies",
+        "series": "Series",
+        "episodes": "Episodes",
+        "songs": "Songs",
+        "albums": "Albums"
     },
     "esphome": {
         "offline": "Offline",
@@ -174,6 +218,13 @@
         "no_active": "No Active Streams",
         "plex_connection_error": "Check Plex Connection"
     },
+    "tracearr": {
+        "no_active": "No Active Streams",
+        "streams": "Streams",
+        "transcodes": "Transcodes",
+        "directplay": "Direct Play",
+        "bitrate": "Bitrate"
+    },
     "omada": {
         "connectedAp": "Connected APs",
         "activeUser": "Active devices",
@@ -213,6 +264,16 @@
         "upload": "Upload",
         "leech": "Leech",
         "seed": "Seed"
+    },
+    "qui": {
+        "leech": "Leech",
+        "download": "Download",
+        "seed": "Seed",
+        "upload": "Upload",
+        "total": "Total",
+        "errored": "Errored",
+        "ratio": "Ratio",
+        "freeSpace": "Free"
     },
     "qnap": {
         "cpuUsage": "CPU Usage",
@@ -272,16 +333,13 @@
         "approved": "Approved",
         "available": "Available"
     },
-    "jellyseerr": {
+    "seerr": {
         "pending": "Pending",
         "approved": "Approved",
-        "available": "Available"
-    },
-    "overseerr": {
-        "pending": "Pending",
+        "available": "Available",
+        "completed": "Completed",
         "processing": "Processing",
-        "approved": "Approved",
-        "available": "Available"
+        "issues": "Open Issues"
     },
     "netalertx": {
         "total": "Total",
@@ -309,7 +367,10 @@
     "portainer": {
         "running": "Running",
         "stopped": "Stopped",
-        "total": "Total"
+        "total": "Total",
+        "applications": "Applications",
+        "services": "Services",
+        "namespaces": "Namespaces"
     },
     "suwayomi": {
       "download": "Downloaded",
@@ -325,6 +386,16 @@
         "address": "Address",
         "expires": "Expires",
         "never": "Never",
+        "user": "User",
+        "hostname": "Hostname",
+        "name": "Name",
+        "client_version": "Client Version",
+        "os": "OS",
+        "created": "Created",
+        "authorized": "Authorized",
+        "is_external": "Is External",
+        "update_available": "Update Available",
+        "tags": "Tags",
         "last_seen": "Last Seen",
         "now": "Now",
         "years": "{{number}}y",
@@ -333,7 +404,9 @@
         "hours": "{{number}}h",
         "minutes": "{{number}}m",
         "seconds": "{{number}}s",
-        "ago": "{{value}} Ago"
+        "ago": "{{value}} Ago",
+        "true": "Yes",
+        "false": "No"
     },
     "technitium": {
         "totalQueries": "Queries",
@@ -358,6 +431,12 @@
         "routers": "Routers",
         "services": "Services",
         "middleware": "Middleware"
+    },
+    "trilium": {
+        "version": "Version",
+        "notesCount": "Notes",
+        "dbSize": "Database Size",
+        "unknown": "Unknown"
     },
     "navidrome": {
         "nothing_streaming": "No Active Streams",
@@ -421,13 +500,19 @@
     "authentik": {
         "users": "Users",
         "loginsLast24H": "Logins (24h)",
-        "failedLoginsLast24H": "Failed Logins (24h)"
+        "failedLoginsLast24H": "Failed Logins (24h)",
+        "authorizationsLast24H": "Auths (24h)"
     },
     "proxmox": {
         "mem": "MEM",
         "cpu": "CPU",
         "lxc": "LXC",
         "vms": "VMs"
+    },
+    "pulse": {
+        "nodes": "Nodes",
+        "vms": "VMs",
+        "lxcs": "LXCs"
     },
     "glances": {
         "cpu": "CPU",
@@ -525,7 +610,8 @@
         "child_bridges_status": "{{ok}}/{{total}}",
         "up": "Up",
         "pending": "Pending",
-        "down": "Down"
+        "down": "Down",
+        "ok": "Ok"
     },
     "healthchecks": {
         "new": "New",
@@ -568,7 +654,8 @@
     "gluetun": {
         "public_ip": "Public IP",
         "region": "Region",
-        "country": "Country"
+        "country": "Country",
+        "port_forwarded": "Port Forwarded"
     },
     "hdhomerun": {
         "channels": "Channels",
@@ -590,6 +677,15 @@
     "paperlessngx": {
         "inbox": "Inbox",
         "total": "Total"
+    },
+    "pangolin": {
+        "orgs": "Orgs",
+        "sites": "Sites",
+        "resources": "Resources",
+        "targets": "Targets",
+        "traffic": "Traffic",
+        "in": "In",
+        "out": "Out"
     },
     "peanut": {
         "battery_charge": "Battery Charge",
@@ -687,6 +783,10 @@
         "uptime": "Uptime",
         "volumeAvailable": "Available"
     },
+    "dispatcharr": {
+        "channels": "Channels",
+        "streams": "Streams"
+    },
     "mylar": {
         "series": "Series",
         "issues": "Issues",
@@ -702,7 +802,8 @@
         "queue": "Queue",
         "processing": "Processing",
         "processed": "Processed",
-        "time": "Time"
+        "time": "Time",
+        "failed": "Failed"
     },
     "firefly": {
         "networth": "Net Worth",
@@ -751,7 +852,8 @@
     "ghostfolio": {
         "gross_percent_today": "Today",
         "gross_percent_1y": "One year",
-        "gross_percent_max": "All time"
+        "gross_percent_max": "All time",
+        "net_worth": "Net Worth"
     },
     "audiobookshelf": {
         "podcasts": "Podcasts",
@@ -773,6 +875,20 @@
         "authors": "Authors",
         "categories": "Categories",
         "series": "Series"
+    },
+    "booklore": {
+        "libraries": "Libraries",
+        "books": "Books",
+        "reading": "Reading",
+        "finished": "Finished"
+    },
+    "bookorbit": {
+        "books": "Books",
+        "authors": "Authors",
+        "series": "Series",
+        "storage": "Storage",
+        "reading": "Reading",
+        "finished": "Finished"
     },
     "jdownloader": {
         "downloadCount": "Queue",
@@ -856,7 +972,8 @@
         "physicalRelease": "Physical release",
         "digitalRelease": "Digital release",
         "noEventsToday": "No events for today!",
-        "noEventsFound": "No events found"
+        "noEventsFound": "No events found",
+        "errorWhenLoadingData": "Error when loading calendar data"
     },
     "romm": {
         "platforms": "Platforms",
@@ -872,9 +989,38 @@
       "mails": "Mails",
       "storage": "Storage"
     },
+    "maintainerr": {
+      "itemsHandled": "Items Handled",
+      "episodesHandled": "Episodes Handled",
+      "moviesHandled": "Movies Handled",
+      "showsHandled": "Shows Handled",
+      "seasonsHandled": "Seasons Handled",
+      "reclaimable": "Reclaimable",
+      "movieReclaimable": "Movie Reclaimable",
+      "showReclaimable": "Show Reclaimable",
+      "totalCapacity": "Total Capacity"
+    },
+    "netbird": {
+      "online": "Online Peers",
+      "users": "Users",
+      "login_expired": "Login Expired"
+    },
     "netdata": {
       "warnings": "Warnings",
       "criticals": "Criticals"
+    },
+    "ntfy": {
+      "title": "Title",
+      "priority": "Priority",
+      "lastReceived": "Last Received",
+      "message": "Message",
+      "tags": "Tags",
+      "none": "None",
+      "min": "Min",
+      "low": "Low",
+      "default": "Default",
+      "high": "High",
+      "urgent": "Urgent"
     },
     "plantit": {
         "events": "Events",
@@ -997,7 +1143,15 @@
       "cpu": "CPU",
       "memory": "MEM",
       "disk": "Disk",
-      "network": "NET"
+      "network": "NET",
+      "temp": "Temp",
+      "load": "Load",
+      "gpu": "GPU",
+      "uptime": "Uptime",
+      "services": "Services",
+      "updates": "Updates",
+      "battery": "Battery",
+      "agent": "Agent"
     },
     "argocd": {
         "apps": "Apps",
@@ -1043,35 +1197,6 @@
         "uploads": "Uploads",
         "sharedFiles": "Files"
     },
-    "ahoydtu": {
-        "network": "Network",
-        "nrf": "Nrf",
-        "mqtt": "Mqtt",
-        "reboot_reason": "Reboot reason",
-        "daily_reboot": "Daily reboot",
-        "uptime": "Uptime",
-        "inverterW0": "Inverter[0]",
-        "inverterW1": "Inverter[1]",
-        "inverterW2": "Inverter[2]",
-        "inverterW3": "Inverter[3]"
-    },
-    "shellypro3em": {
-        "uptime": "Uptime",
-        "wifi": "WIFI",
-        "eth": "ETH",
-        "mqtt": "Mqtt",
-        "ws": "Webservice",
-        "temperature": "Temp",
-        "total_W": "Total",
-        "phaseA_W": "Phase A",
-        "phaseB_W": "Phase B",
-        "phaseC_W": "Phase C"
-    },
-    "tasmota": {
-        "uptime": "Uptime",
-        "ssid": "SSID",
-        "state": "State"
-    },
     "shellyplug": {
         "uptime": "Uptime",
         "power": "Power",
@@ -1084,5 +1209,113 @@
         "disScheduleCount": "Disabled schedules",
         "nextOnEnSchedule": "Next ON",
         "nextOffEnSchedule": "Next OFF"
+    "jellystat": {
+        "songs": "Songs",
+        "movies": "Movies",
+        "episodes": "Episodes",
+        "other": "Other"
+    },
+    "checkmk": {
+        "serviceErrors": "Service issues",
+        "hostErrors": "Host issues"
+    },
+    "komodo": {
+        "total": "Total",
+        "running": "Running",
+        "stopped": "Stopped",
+        "down": "Down",
+        "unhealthy": "Unhealthy",
+        "unknown": "Unknown",
+        "servers": "Servers",
+        "stacks": "Stacks",
+        "containers": "Containers"
+    },
+    "filebrowser": {
+        "available": "Available",
+        "used": "Used",
+        "total": "Total"
+    },
+    "wallos": {
+        "activeSubscriptions": "Subscriptions",
+        "thisMonthlyCost": "This Month",
+        "nextMonthlyCost": "Next Month",
+        "previousMonthlyCost": "Prev. Month",
+        "nextRenewingSubscription": "Next Payment"
+    },
+    "unraid": {
+        "STARTED": "Started",
+        "STOPPED": "Stopped",
+        "NEW_ARRAY": "New Array",
+        "RECON_DISK": "Reconstructing Disk",
+        "DISABLE_DISK": "Disk Disabled",
+        "SWAP_DSBL": "Swap Disable",
+        "INVALID_EXPANSION": "Invalid Expansion",
+        "PARITY_NOT_BIGGEST": "Parity Not Biggest",
+        "TOO_MANY_MISSING_DISKS": "Too Many Missing Disks",
+        "NEW_DISK_TOO_SMALL": "New Disk Too Small",
+        "NO_DATA_DISKS": "No Data Disks",
+        "notifications": "Notifications",
+        "status": "Status",
+        "cpu": "CPU",
+        "memoryUsed": "Memory Used",
+        "memoryAvailable": "Memory Available",
+        "arrayUsed": "Array Used",
+        "arrayFree": "Array Free",
+        "poolUsed": "{{pool}} Used",
+        "poolFree": "{{pool}} Free"
+    },
+    "backrest": {
+        "num_plans": "Plans",
+        "num_success_30": "Successes",
+        "num_failure_30": "Failures",
+        "num_success_latest": "Succeeding",
+        "num_failure_latest": "Failing",
+        "bytes_added_30": "Bytes Added"
+    },
+    "yourspotify": {
+      "songs": "Songs",
+      "time":  "Time",
+      "artists": "Artists"
+    },
+    "arcane": {
+        "containers": "Containers",
+        "images": "Images",
+        "image_updates": "Image Updates",
+        "images_unused": "Unused",
+        "environment_required": "Environment ID Required"
+    },
+    "dockhand": {
+        "running": "Running",
+        "stopped": "Stopped",
+        "cpu": "CPU",
+        "memory": "Memory",
+        "images": "Images",
+        "volumes": "Volumes",
+        "events_today": "Events Today",
+        "pending_updates": "Pending Updates",
+        "stacks": "Stacks",
+        "paused": "Paused",
+        "total": "Total",
+        "environment_not_found": "Environment Not Found"
+    },
+    "sparkyfitness": {
+        "eaten": "Eaten",
+        "burned": "Burned",
+        "remaining": "Remaining",
+        "steps": "Steps"
+    },
+    "syncthing": {
+        "connected": "Connected",
+        "synced": "Synced",
+        "errors": "Errors",
+        "storage": "Storage"
+    },
+    "sportarr": {
+        "wanted": "Wanted",
+        "queued": "Queued",
+        "leagues": "Leagues"
+    },
+    "feed": {
+        "noItems": "No items"
     }
 }

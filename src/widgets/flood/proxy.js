@@ -1,6 +1,7 @@
 import getServiceWidget from "utils/config/service-helpers";
 import createLogger from "utils/logger";
 import { formatApiCall } from "utils/proxy/api-helpers";
+import { setCookieHeader } from "utils/proxy/cookie-jar";
 import { httpProxy } from "utils/proxy/http";
 
 const logger = createLogger("floodProxyHandler");
@@ -12,7 +13,7 @@ async function login(widget) {
   const loginParams = {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: null,
+    body: "{}",
   };
 
   if (widget.username && widget.password) {
@@ -22,7 +23,6 @@ async function login(widget) {
     });
   }
 
-  // eslint-disable-next-line no-unused-vars
   const [status, contentType, data] = await httpProxy(loginUrl, loginParams);
   return [status, data];
 }
@@ -54,6 +54,8 @@ export default async function floodProxyHandler(req, res) {
       return res.status(status).end(data);
     }
 
+    // refresh the cookie header from the jar, otherwise the retry reuses the stale session cookie
+    setCookieHeader(url, params, { overwrite: true });
     [status, contentType, data] = await httpProxy(url, params);
   }
 

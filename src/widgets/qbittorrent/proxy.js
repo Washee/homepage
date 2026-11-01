@@ -1,6 +1,7 @@
 import getServiceWidget from "utils/config/service-helpers";
 import createLogger from "utils/logger";
 import { formatApiCall } from "utils/proxy/api-helpers";
+import { setCookieHeader } from "utils/proxy/cookie-jar";
 import { httpProxy } from "utils/proxy/http";
 
 const logger = createLogger("qbittorrentProxyHandler");
@@ -15,7 +16,6 @@ async function login(widget) {
     body: loginBody,
   };
 
-  // eslint-disable-next-line no-unused-vars
   const [status, contentType, data] = await httpProxy(loginUrl, loginParams);
   return [status, data];
 }
@@ -37,21 +37,24 @@ export default async function qbittorrentProxyHandler(req, res) {
 
   const url = new URL(formatApiCall("{url}/api/v2/{endpoint}", { endpoint, ...widget }));
   const params = { method: "GET", headers: {} };
+  if (widget.key) params.headers.Authorization = `Bearer ${widget.key}`;
 
   let [status, contentType, data] = await httpProxy(url, params);
-  if (status === 403) {
+  if (status === 403 && !widget.key) {
     [status, data] = await login(widget);
 
-    if (status !== 200) {
+    if (![200, 204].includes(status)) {
       logger.error("HTTP %d logging in to qBittorrent.  Data: %s", status, data);
       return res.status(status).end(data);
     }
 
-    if (data.toString() !== "Ok.") {
+    if (status === 200 && data.toString() !== "Ok.") {
       logger.error("Error logging in to qBittorrent: Data: %s", data);
       return res.status(401).end(data);
     }
 
+    // refresh the cookie header from the jar, otherwise the retry reuses the stale session cookie
+    setCookieHeader(url, params, { overwrite: true });
     [status, contentType, data] = await httpProxy(url, params);
   }
 

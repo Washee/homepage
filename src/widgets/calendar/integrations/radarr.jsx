@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-i18next/pages";
 import { useEffect } from "react";
 
 import Error from "../../../components/services/widget/error";
@@ -22,6 +22,7 @@ export default function Integration({ config, params, setEvents, hideErrors = fa
       const cinemaTitle = `${event.title} - ${t("calendar.inCinemas")}`;
       const physicalTitle = `${event.title} - ${t("calendar.physicalRelease")}`;
       const digitalTitle = `${event.title} - ${t("calendar.digitalRelease")}`;
+      const url = config?.baseUrl && event.titleSlug && `${config.baseUrl}/movie/${event.titleSlug}`;
 
       if (event.inCinemas) {
         eventsToAdd[cinemaTitle] = {
@@ -30,6 +31,7 @@ export default function Integration({ config, params, setEvents, hideErrors = fa
           color: config?.color ?? "amber",
           isCompleted: event.hasFile,
           additional: "",
+          url,
         };
       }
 
@@ -40,6 +42,7 @@ export default function Integration({ config, params, setEvents, hideErrors = fa
           color: config?.color ?? "cyan",
           isCompleted: event.hasFile,
           additional: "",
+          url,
         };
       }
 
@@ -50,6 +53,7 @@ export default function Integration({ config, params, setEvents, hideErrors = fa
           color: config?.color ?? "emerald",
           isCompleted: event.hasFile,
           additional: "",
+          url,
         };
       }
     });

@@ -19,11 +19,17 @@ export default async function genericProxyHandler(req, res, map) {
 
     if (widget) {
       // if there are more than one question marks, replace others to &
-      const url = new URL(
-        formatApiCall(widgets[widget.type].api, { endpoint, ...widget }).replace(/(?<=\?.*)\?/g, "&"),
-      );
+      let urlString = formatApiCall(widgets[widget.type].api, { endpoint, ...widget }).replace(/(?<=\?.*)\?/g, "&");
+      if (widget.type === "customapi" && widget.url?.endsWith("/")) {
+        urlString += "/"; // Ensure we dont lose the trailing slash for custom API calls
+      }
+      const url = new URL(urlString);
 
-      const headers = req.extraHeaders ?? widget.headers ?? widgets[widget.type].headers ?? {};
+      const headers = {
+        ...(widgets[widget.type].headers ?? {}),
+        ...(widget.headers ?? {}),
+        ...(req.extraHeaders ?? {}),
+      };
 
       if (widget.username && widget.password) {
         headers.Authorization = `Basic ${Buffer.from(`${widget.username}:${widget.password}`).toString("base64")}`;
@@ -43,7 +49,7 @@ export default async function genericProxyHandler(req, res, map) {
         }
       }
 
-      const [status, contentType, data] = await httpProxy(url, params);
+      const [status, contentType, data, responseHeaders] = await httpProxy(url, params);
 
       let resultData = data;
 
@@ -57,7 +63,7 @@ export default async function genericProxyHandler(req, res, map) {
             .status(status)
             .json({ error: { message: "Invalid data", url: sanitizeErrorURL(url), data: resultData } });
         }
-        if (map) resultData = map(resultData);
+        if (map) resultData = map(resultData, responseHeaders);
       }
 
       if (contentType) res.setHeader("Content-Type", contentType);

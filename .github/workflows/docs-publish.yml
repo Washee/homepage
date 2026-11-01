@@ -4,81 +4,53 @@ on:
   push:
     tags: ["v*.*.*"]
     branches: ["main"]
-    paths:
-      - "docs/**"
-      - "mkdocs.yml"
   pull_request:
-    paths:
-      - "docs/**"
-      - "mkdocs.yml"
   merge_group:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  pre-commit:
-    name: Linting Checks
-    runs-on: ubuntu-22.04
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Install python
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.x
-      - name: Check files
-        uses: pre-commit/action@v3.0.1
 
   test:
-    name: Test Build
+    name: Test Build Docs
     if: github.repository == 'gethomepage/homepage' && github.event_name == 'pull_request'
     runs-on: ubuntu-latest
-    needs:
-      - pre-commit
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
-          python-version: 3.x
-      - run: echo "cache_id=$(date --utc '+%V')" >> $GITHUB_ENV
-      - uses: actions/cache@v4
-        with:
-          key: mkdocs-material-${{ env.cache_id }}
-          path: .cache
-          restore-keys: |
-            mkdocs-material-
+          python-version-file: ".python-version"
+      - name: Install uv
+        uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e # v10.3.2
       - run: sudo apt-get install pngquant
-      - run: pip install mkdocs-material mkdocs-redirects "mkdocs-material[imaging]"
       - name: Test Docs Build
-        run: MKINSIDERS=false mkdocs build
+        run: uv run --frozen zensical build --clean
   deploy:
-    name: Build & Deploy
+    name: Build & Deploy Docs
     if: github.repository == 'gethomepage/homepage' && github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    needs:
-      - pre-commit
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
-      - name: Configure Git Credentials
-        run: |
-          git config user.name github-actions[bot]
-          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-      - uses: actions/setup-python@v5
+      - uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
-          python-version: 3.x
-      - run: echo "cache_id=${{github.sha}}" >> $GITHUB_ENV
-      - uses: actions/cache@v4
-        with:
-          key: mkdocs-material-${{ env.cache_id }}
-          path: .cache
-          restore-keys: |
-            mkdocs-material-
+          python-version-file: ".python-version"
+      - name: Install uv
+        uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e # v10.3.2
       - run: sudo apt-get install pngquant
-      - run: pip install git+https://${GH_TOKEN}@github.com/benphelps/mkdocs-material-insiders.git
-      - run: pip install mkdocs-redirects "mkdocs-material[imaging]"
-      - name: Docs Deploy
-        run: MKINSIDERS=true mkdocs gh-deploy --force
-env:
-  GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      - name: Build Docs
+        run: uv run --frozen zensical build --clean
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: site
+      - uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
+        id: deployment

@@ -1,10 +1,13 @@
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-i18next/pages";
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { useCallback } from "react";
 
 import Block from "../components/block";
 import Container from "../components/container";
 
+import useDataPoints from "./use-data-points";
+
+import { parseVersionForUrl } from "utils/proxy/api-helpers";
 import useWidgetAPI from "utils/proxy/use-widget-api";
 
 const Chart = dynamic(() => import("../components/chart"), { ssr: false });
@@ -16,34 +19,32 @@ export default function Component({ service }) {
   const { t } = useTranslation();
   const { widget } = service;
   const { chart, refreshInterval = defaultInterval, pointsLimit = defaultPointsLimit, version = 3 } = widget;
+  const apiVersion = parseVersionForUrl(version, 3);
   const [, sensorName] = widget.metric.split(":");
 
-  const [dataPoints, setDataPoints] = useState(new Array(pointsLimit).fill({ value: 0 }, 0, pointsLimit));
+  const [dataPoints, addDataPoint] = useDataPoints(pointsLimit, { value: null });
 
-  const { data, error } = useWidgetAPI(service.widget, `${version}/sensors`, {
-    refreshInterval: Math.max(defaultInterval, refreshInterval),
-  });
-
-  useEffect(() => {
-    if (data && !data.error) {
-      const sensorData = data.find((item) => item.label === sensorName);
-      if (sensorData) {
-        setDataPoints((prevDataPoints) => {
-          const newDataPoints = [...prevDataPoints, { value: sensorData.value }];
-          if (newDataPoints.length > pointsLimit) {
-            newDataPoints.shift();
-          }
-          return newDataPoints;
-        });
-      } else {
-        data.error = true;
+  const handleData = useCallback(
+    (newData) => {
+      if (!newData?.error) {
+        const sensorData = newData.find((item) => item.label === sensorName);
+        if (sensorData) addDataPoint({ value: sensorData.value });
       }
-    }
-  }, [data, sensorName, pointsLimit]);
+    },
+    [addDataPoint, sensorName],
+  );
 
-  if (error || (data && data.error)) {
-    const finalError = error || data.error;
-    return <Container error={finalError} widget={widget} />;
+  const { data, error } = useWidgetAPI(
+    service.widget,
+    `${apiVersion}/sensors`,
+    {
+      refreshInterval: Math.max(defaultInterval, refreshInterval),
+    },
+    { onSuccess: handleData },
+  );
+
+  if (error || data?.error) {
+    return <Container error={error || data.error} widget={widget} />;
   }
 
   if (!data) {
@@ -68,6 +69,8 @@ export default function Component({ service }) {
     <Container chart={chart}>
       {chart && (
         <Chart
+          chartMin={widget.chartMin}
+          chartMax={widget.chartMax}
           dataPoints={dataPoints}
           label={[sensorData.unit]}
           max={sensorData.critical}

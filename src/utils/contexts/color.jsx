@@ -17,10 +17,10 @@ const getInitialColor = () => {
 export const ColorContext = createContext();
 
 export function ColorProvider({ initialTheme, children }) {
-  const [color, setColor] = useState(getInitialColor);
+  const [color, setColor] = useState(() => initialTheme ?? getInitialColor());
 
   const rawSetColor = (rawColor) => {
-    const root = window.document.getElementById("page_wrapper");
+    const root = window.document.documentElement;
 
     root.classList.remove(`theme-${lastColor}`);
     root.classList.add(`theme-${rawColor}`);
@@ -29,10 +29,6 @@ export function ColorProvider({ initialTheme, children }) {
 
     lastColor = rawColor;
   };
-
-  if (initialTheme) {
-    rawSetColor(initialTheme);
-  }
 
   useEffect(() => {
     rawSetColor(color);
