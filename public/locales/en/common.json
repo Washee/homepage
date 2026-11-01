@@ -1209,6 +1209,7 @@
         "disScheduleCount": "Disabled schedules",
         "nextOnEnSchedule": "Next ON",
         "nextOffEnSchedule": "Next OFF"
+    },
     "jellystat": {
         "songs": "Songs",
         "movies": "Movies",
