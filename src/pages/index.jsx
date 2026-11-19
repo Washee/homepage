@@ -1,4 +1,11 @@
 import classNames from "classnames";
+import BookmarksGroup from "components/bookmarks/group";
+import ErrorBoundary from "components/errorboundry";
+import QuickLaunch from "components/quicklaunch";
+import ServicesGroup from "components/services/group";
+import Tab, { slugifyAndEncode } from "components/tab";
+import Revalidate from "components/toggles/revalidate";
+import Widget from "components/widgets/widget";
 import { useTranslation } from "next-i18next/pages";
 import dynamic from "next/dynamic";
 import Head from "next/head";
@@ -7,21 +14,15 @@ import Script from "next/script";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { BiError } from "react-icons/bi";
 import useSWR, { SWRConfig } from "swr";
-
-import BookmarksGroup from "components/bookmarks/group";
-import ErrorBoundary from "components/errorboundry";
-import QuickLaunch from "components/quicklaunch";
-import ServicesGroup from "components/services/group";
-import Tab, { slugifyAndEncode } from "components/tab";
-import Revalidate from "components/toggles/revalidate";
-import Widget from "components/widgets/widget";
-import { withPageAuth } from "utils/auth";
-import { getDashboardData } from "utils/config/dashboard";
 import { ColorContext } from "utils/contexts/color";
 import { SettingsContext } from "utils/contexts/settings";
 import { TabContext } from "utils/contexts/tab";
 import { ThemeContext } from "utils/contexts/theme";
+
+import { withPageAuth } from "utils/auth";
+import { getDashboardData } from "utils/config/dashboard";
 import useWindowFocus from "utils/hooks/window-focus";
+import normalizeLanguage from "utils/language";
 import themes from "utils/styles/themes";
 
 const ThemeToggle = dynamic(() => import("components/toggles/theme"), {
@@ -41,17 +42,6 @@ const Version = dynamic(() => import("components/version"), {
 });
 
 const rightAlignedWidgets = ["weatherapi", "openweathermap", "weather", "openmeteo", "search", "datetime"];
-
-// Normalize language codes so older config values like zh-CN still point to Crowdin-provided ones
-const LANGUAGE_ALIASES = {
-  "zh-cn": "zh-Hans",
-};
-
-const normalizeLanguage = (language) => {
-  if (!language) return "en";
-  const alias = LANGUAGE_ALIASES[language.toLowerCase()];
-  return alias || language;
-};
 
 export const getServerSideProps = withPageAuth(async () => ({ props: await getDashboardData() }));
 
@@ -321,6 +311,7 @@ function Home({ initialSettings }) {
                   disableCollapse={settings.disableCollapse}
                   maxGroupColumns={settings.maxBookmarkGroupColumns ?? settings.maxGroupColumns}
                   groupsInitiallyCollapsed={settings.groupsInitiallyCollapsed}
+                  bookmarksStyle={settings.bookmarksStyle}
                 />
               ),
             )}
